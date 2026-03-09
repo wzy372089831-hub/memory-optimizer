@@ -3,7 +3,7 @@
   "displayName": "记忆优化器",
   "version": "0.1.0",
   "description": "OpenClaw 记忆优化技能 - LanceDB 配置优化 + 记忆分级 + 智能搜索",
-  "author": "OpenClaw 中文社区",
+  "author": "超人",
   "license": "MIT",
   "runtime": "python",
   "entrypoint": "src/memory_optimizer.py",

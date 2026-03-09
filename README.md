@@ -145,7 +145,7 @@ cat ~/.openclaw/memory/backup/backup_20260309_030000.json
 
 ## 作者
 
-OpenClaw 中文社区
+超人
 
 ## 许可
 
