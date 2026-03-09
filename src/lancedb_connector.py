@@ -16,7 +16,6 @@ class LanceDBConnector:
         self.config = config
         self.db = None
         self.table = None
-        self.cache = {}
 
     def _resolve_vector_dim(self) -> int:
         """
@@ -24,12 +23,8 @@ class LanceDBConnector:
         优先读取 OpenClaw 配置；无法确定时生成一条测试向量获取真实维度。
         """
         try:
-            import sys, os
-            # 确保可以 import smart_search
-            src_dir = os.path.dirname(os.path.abspath(__file__))
-            if src_dir not in sys.path:
-                sys.path.insert(0, src_dir)
-            from smart_search import EmbeddingGenerator
+            import sys
+            from .smart_search import EmbeddingGenerator
             embedder = EmbeddingGenerator(self.config.get('embedding', {}))
             return embedder.get_dim()
         except Exception as e:
@@ -141,9 +136,17 @@ class LanceDBConnector:
         # 获取记录数
         count = self.table.count_rows()
         
+        db_path = os.path.expanduser(self.config['lancedb']['path'])
+        size_mb = 0.0
+        if os.path.exists(db_path):
+            for dirpath, _, filenames in os.walk(db_path):
+                for f in filenames:
+                    size_mb += os.path.getsize(os.path.join(dirpath, f))
+            size_mb /= 1024 * 1024
+
         return {
             "count": count,
-            "size_mb": 0,  # TODO: 计算实际大小
+            "size_mb": round(size_mb, 2),
             "index_type": self.config['lancedb'].get('index_type', 'unknown')
         }
 

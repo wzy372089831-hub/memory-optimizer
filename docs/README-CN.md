@@ -58,7 +58,7 @@ from memory_optimizer import MemoryOptimizer
 
 # 初始化
 optimizer = MemoryOptimizer('config.json')
-optimizer.connect()
+optimizer.initialize()
 
 # 智能搜索
 results = optimizer.search("用户偏好", limit=5)
@@ -67,7 +67,7 @@ results = optimizer.search("用户偏好", limit=5)
 stats = optimizer.get_stats()
 
 # 清理冷记忆
-cleanup_result = optimizer.cleanup(days=30, dry_run=True)
+cleanup_result = optimizer.cleanup_old_memories(days=30, dry_run=True)
 ```
 
 ---

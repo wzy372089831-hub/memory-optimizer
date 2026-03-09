@@ -3,7 +3,6 @@ OpenClaw 记忆优化器 - 主模块
 功能：LanceDB 配置优化 + 记忆分级 + 智能搜索 + 定期清理
 """
 
-import lancedb
 import json
 import logging
 import os
@@ -12,10 +11,10 @@ from typing import List, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-from lancedb_connector import LanceDBConnector
-from memory_tiering import MemoryTiering
-from smart_search import SmartSearch
-from cleanup_scheduler import CleanupScheduler
+from src.lancedb_connector import LanceDBConnector
+from src.memory_tiering import MemoryTiering
+from src.smart_search import SmartSearch
+from src.cleanup_scheduler import CleanupScheduler
 
 
 class MemoryOptimizer:
@@ -136,7 +135,7 @@ class MemoryOptimizer:
 # Hook 函数
 def on_write(memory_data: Dict) -> Dict:
     """记忆写入时的优化"""
-    from memory_tiering import MemoryTiering
+    from .memory_tiering import MemoryTiering
     tiering = MemoryTiering({"tiering": {}})
     memory_data['tier'] = tiering.classify(memory_data)
     return memory_data

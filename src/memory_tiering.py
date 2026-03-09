@@ -25,7 +25,10 @@ class MemoryTiering:
         if isinstance(last_accessed, (int, float)):
             last_accessed = datetime.fromtimestamp(last_accessed)
         elif isinstance(last_accessed, str):
-            last_accessed = datetime.fromisoformat(last_accessed)
+            try:
+                last_accessed = datetime.fromisoformat(last_accessed)
+            except ValueError:
+                return "COLD"
         
         if last_accessed is None:
             return "COLD"

@@ -171,7 +171,7 @@ class CleanupScheduler:
                 self.connector.table.delete(f"id IN ({id_list})")
                 print(f"🗑️  已移入回收站 {len(ids)} 条（{trash_file}）")
 
-            return len(memories)
+            return len(ids)
         except Exception as e:
             print(f"❌ 移入回收站失败：{e}")
             return 0
@@ -439,29 +439,6 @@ class CleanupScheduler:
         except Exception as e:
             print(f"⚠️  获取记忆失败：{e}")
             return []
-
-    def _archive_memories(self, memories: List[Dict]) -> int:
-        """归档记忆到文件（旧方法，保留兼容性）"""
-        try:
-            os.makedirs(self.archive_path, exist_ok=True)
-            archive_file = os.path.join(
-                self.archive_path,
-                f"archive_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-            )
-            with open(archive_file, 'w', encoding='utf-8') as f:
-                json.dump(memories, f, ensure_ascii=False, indent=2, default=str)
-            print(f"📦 已归档到：{archive_file}")
-
-            ids = [str(m['id']) for m in memories if m.get('id') is not None]
-            if ids and self.connector.table is not None:
-                id_list = ", ".join(f"'{i}'" for i in ids)
-                self.connector.table.delete(f"id IN ({id_list})")
-                print(f"🗑️  已从 LanceDB 删除 {len(ids)} 条记忆")
-
-            return len(memories)
-        except Exception as e:
-            print(f"❌ 归档失败：{e}")
-            return 0
 
     def _cleanup_old_archives(self, delete_after_days: int, dry_run: bool) -> int:
         """清理过期归档文件"""
