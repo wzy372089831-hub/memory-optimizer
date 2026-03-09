@@ -86,6 +86,8 @@ def test_hook_functions():
     """测试 Hook 函数（on_write / on_read）"""
     print("\n=== 测试 Hook 函数 ===")
 
+    import sys
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
     from memory_optimizer import on_write, on_read
     from datetime import datetime, timedelta
 
