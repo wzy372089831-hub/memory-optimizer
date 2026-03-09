@@ -15,8 +15,9 @@
 - 🔍 **智能搜索**: 向量 + 关键词 + 时间过滤
 - ⚡ **按需加载**: 只加载最相关的 3-5 条
 - 🧹 **定期清理**: 自动归档冷记忆
+- 🛡️ **安全保障**: 回收站、白名单保护、自动备份
 
-**预期效果**: Token 消耗减少 90%+
+**预期效果**: Token 消耗减少 80-95%
 
 ---
 
@@ -54,7 +55,7 @@ pip3 install -r requirements.txt
 ### 3. 使用
 
 ```python
-from memory_optimizer import MemoryOptimizer
+from src.memory_optimizer import MemoryOptimizer
 
 # 初始化
 optimizer = MemoryOptimizer('config.json')
@@ -77,23 +78,46 @@ cleanup_result = optimizer.cleanup_old_memories(days=30, dry_run=True)
 ### 智能搜索
 
 ```bash
-openclaw skill run memory-opt search "查询内容" --limit 5
+python3 -m src.memory_optimizer search "查询内容" --limit 5
 ```
 
 ### 查看统计
 
 ```bash
-openclaw skill run memory-opt stats
+python3 -m src.memory_optimizer stats
 ```
 
 ### 清理冷记忆
 
 ```bash
 # 预览
-openclaw skill run memory-opt cleanup --days 30 --dry-run
+python3 -m src.memory_optimizer cleanup --days 30 --dry-run
 
-# 执行
-openclaw skill run memory-opt cleanup --days 30
+# 执行（超过 10 条会要求确认）
+python3 -m src.memory_optimizer cleanup --days 30
+
+# 跳过确认直接执行
+python3 -m src.memory_optimizer cleanup --days 30 --force
+```
+
+### 保护记忆
+
+```bash
+# 保护记忆（加入白名单，永不删除）
+python3 -m src.memory_optimizer protect <memory-id>
+
+# 解除保护
+python3 -m src.memory_optimizer unprotect <memory-id>
+```
+
+### 回收站操作
+
+```bash
+# 查看回收站
+python3 -m src.memory_optimizer trash list
+
+# 恢复记忆
+python3 -m src.memory_optimizer trash restore <memory-id>
 ```
 
 ---
@@ -156,7 +180,7 @@ openclaw skill run memory-opt cleanup --days 30
 ```bash
 # 每天凌晨 3 点清理
 crontab -e
-# 添加：0 3 * * * cd ~/AI/Claude/memory-optimizer && python3 -m src.cleanup_scheduler
+# 添加：0 3 * * * cd ~/AI/Claude/memory-optimizer && python3 -m src.memory_optimizer cleanup --days 90 --force
 ```
 
 ---
@@ -193,7 +217,7 @@ pip3 install lancedb pandas numpy pydantic psutil
 
 | 指标 | 优化前 | 优化后 | 改善 |
 |------|--------|--------|------|
-| Token 消耗 | 5000-50000/次 | 500-5000/次 | -90% |
+| Token 消耗 | 5000-50000/次 | 500-5000/次 | -80-95% |
 | 搜索延迟 | 100-500ms | 10-50ms | 10x |
 | 存储空间 | 1-10GB | 0.1-1GB | -90% |
 

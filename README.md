@@ -9,6 +9,7 @@ OpenClaw 记忆优化技能 - 减少 90%+ Token 消耗
 - 🔍 **智能搜索**: 向量 + 关键词 + 时间过滤
 - ⚡ **按需加载**: 只加载最相关的 3-5 条
 - 🧹 **定期清理**: 自动归档冷记忆
+- 🛡️ **安全保障**: 回收站、白名单保护、自动备份
 
 ## 安全警告
 
@@ -31,19 +32,31 @@ openclaw skill install .
 
 ```bash
 # 智能搜索
-openclaw skill run memory-opt search "用户偏好" --limit 5
+python3 -m src.memory_optimizer search "用户偏好" --limit 5
 
 # 查看统计
-openclaw skill run memory-opt stats
+python3 -m src.memory_optimizer stats
 
 # 清理冷记忆（先预览）
-openclaw skill run memory-opt cleanup --days 30 --dry-run
+python3 -m src.memory_optimizer cleanup --days 30 --dry-run
 
 # 清理冷记忆（执行，超过 10 条会要求确认）
-openclaw skill run memory-opt cleanup --days 30
+python3 -m src.memory_optimizer cleanup --days 30
 
 # 清理冷记忆（跳过确认，直接执行）
-openclaw skill run memory-opt cleanup --days 30 --force
+python3 -m src.memory_optimizer cleanup --days 30 --force
+
+# 保护记忆（加入白名单）
+python3 -m src.memory_optimizer protect <memory-id>
+
+# 解除保护
+python3 -m src.memory_optimizer unprotect <memory-id>
+
+# 查看回收站
+python3 -m src.memory_optimizer trash list
+
+# 从回收站恢复
+python3 -m src.memory_optimizer trash restore <memory-id>
 ```
 
 ## 数据保护指南
@@ -54,10 +67,10 @@ openclaw skill run memory-opt cleanup --days 30 --force
 
 ```bash
 # 保护某条记忆
-openclaw skill run memory-opt protect <memory-id>
+python3 -m src.memory_optimizer protect <memory-id>
 
 # 解除保护
-openclaw skill run memory-opt unprotect <memory-id>
+python3 -m src.memory_optimizer unprotect <memory-id>
 ```
 
 ### 回收站操作
@@ -66,10 +79,10 @@ openclaw skill run memory-opt unprotect <memory-id>
 
 ```bash
 # 查看回收站内容
-openclaw skill run memory-opt trash list
+python3 -m src.memory_optimizer trash list
 
 # 恢复某条记忆
-openclaw skill run memory-opt trash restore <memory-id>
+python3 -m src.memory_optimizer trash restore <memory-id>
 ```
 
 ### 备份与恢复
@@ -115,20 +128,20 @@ cat ~/.openclaw/memory/backup/backup_20260309_030000.json
 
 | 指标 | 优化前 | 优化后 | 改善 |
 |------|--------|--------|------|
-| Token 消耗 | 5000-50000/次 | 500-5000/次 | -90% |
+| Token 消耗 | 5000-50000/次 | 500-5000/次 | -80-95% |
 | 搜索延迟 | 100-500ms | 10-50ms | 10x |
 | 存储空间 | 1-10GB | 0.1-1GB | -90% |
 
 ## 开发进度
 
 - [x] 项目初始化 (3/9)
-- [ ] LanceDB 连接
-- [ ] 记忆分级实现
-- [ ] 智能搜索实现
+- [x] LanceDB 连接
+- [x] 记忆分级实现
+- [x] 智能搜索实现
 - [x] 清理功能实现
 - [x] 数据安全保障（回收站、白名单、备份、二次确认）
-- [ ] 测试
-- [ ] 发布
+- [x] 测试 (3/3 通过)
+- [x] 发布
 
 ## 作者
 
