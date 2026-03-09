@@ -1,0 +1,49 @@
+{
+  "lancedb": {
+    "path": "~/.openclaw/memory/lancedb",
+    "index_type": "IVF_PQ",
+    "num_partitions": 256,
+    "num_sub_vectors": 96,
+    "cache_size_mb": 1024
+  },
+  "embedding": {
+    "openclaw_config_paths": [
+      "~/.openclaw/config.json",
+      "~/.openclaw/settings.json",
+      "~/.config/openclaw/config.json"
+    ],
+    "fallback_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "fallback_dim": 384
+  },
+  "tiering": {
+    "hot_threshold_hours": 24,
+    "warm_threshold_days": 7,
+    "hot_max_count": 50,
+    "warm_max_count": 500
+  },
+  "search": {
+    "default_limit": 5,
+    "max_limit": 20,
+    "min_relevance_score": 0.6,
+    "hybrid_search": true,
+    "max_keyword_scan": 2000
+  },
+  "cleanup": {
+    "auto_archive": true,
+    "archive_path": "~/.openclaw/memory/archive",
+    "delete_after_days": 90,
+    "trash_path": "~/.openclaw/memory/trash",
+    "trash_retention_days": 7,
+    "backup_path": "~/.openclaw/memory/backup",
+    "protected_ids_file": "~/.openclaw/memory/protected_ids.json",
+    "confirm_threshold": 50,
+    "min_access_count_to_delete": 3,
+    "max_delete_per_run": 50,
+    "important_content_min_length": 200,
+    "important_recent_days": 30
+  },
+  "token_tracking": {
+    "enabled": true,
+    "report_path": "~/.openclaw/memory/token-stats.json"
+  }
+}

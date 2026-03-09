@@ -1,0 +1,27 @@
+{
+  "name": "memory-optimizer",
+  "displayName": "记忆优化器",
+  "version": "0.1.0",
+  "description": "OpenClaw 记忆优化技能 - LanceDB 配置优化 + 记忆分级 + 智能搜索",
+  "author": "OpenClaw 中文社区",
+  "license": "MIT",
+  "runtime": "python",
+  "entrypoint": "src/memory_optimizer.py",
+  "trigger": "memory-opt",
+  "commands": [
+    {"name": "search",    "description": "智能搜索 (向量 + 关键词 + 时间)", "args": ["query", "--limit", "--tier", "--since"]},
+    {"name": "stats",     "description": "显示记忆分级统计", "args": []},
+    {"name": "cleanup",   "description": "清理/归档冷记忆", "args": ["--days", "--dry-run", "--force"]},
+    {"name": "protect",   "description": "将记忆加入白名单（永不删除）", "args": ["id"]},
+    {"name": "unprotect", "description": "解除记忆的白名单保护", "args": ["id"]},
+    {"name": "trash",     "description": "管理回收站 (list / restore <id>)", "args": ["list|restore", "--id"]},
+    {"name": "promote",   "description": "升级记忆到 HOT 层", "args": ["memory_id"]}
+  ],
+  "config": "config.json",
+  "dependencies": {"python": ">=3.10", "packages": "requirements.txt"},
+  "hooks": {
+    "on_memory_write": "src/memory_optimizer.py:on_write",
+    "on_memory_read": "src/memory_optimizer.py:on_read"
+  },
+  "schedule": {"cleanup": "0 3 * * *"}
+}
