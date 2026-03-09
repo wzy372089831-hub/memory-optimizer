@@ -6,15 +6,24 @@ OpenClaw 记忆优化器 - 主模块
 import json
 import logging
 import os
+import sys
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-from src.lancedb_connector import LanceDBConnector
-from src.memory_tiering import MemoryTiering
-from src.smart_search import SmartSearch
-from src.cleanup_scheduler import CleanupScheduler
+# 支持两种导入方式：作为包运行 or 作为脚本运行
+try:
+    from src.lancedb_connector import LanceDBConnector
+    from src.memory_tiering import MemoryTiering
+    from src.smart_search import SmartSearch
+    from src.cleanup_scheduler import CleanupScheduler
+except ImportError:
+    sys.path.insert(0, os.path.dirname(__file__))
+    from lancedb_connector import LanceDBConnector
+    from memory_tiering import MemoryTiering
+    from smart_search import SmartSearch
+    from cleanup_scheduler import CleanupScheduler
 
 
 class MemoryOptimizer:
