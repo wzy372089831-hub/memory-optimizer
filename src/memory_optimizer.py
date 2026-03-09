@@ -144,7 +144,10 @@ class MemoryOptimizer:
 # Hook 函数
 def on_write(memory_data: Dict) -> Dict:
     """记忆写入时的优化"""
-    from .memory_tiering import MemoryTiering
+    import sys
+    import os
+    sys.path.insert(0, os.path.dirname(__file__))
+    from memory_tiering import MemoryTiering
     tiering = MemoryTiering({"tiering": {}})
     memory_data['tier'] = tiering.classify(memory_data)
     return memory_data

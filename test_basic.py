@@ -88,6 +88,7 @@ def test_hook_functions():
 
     import sys
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+    sys.path.insert(0, os.path.dirname(__file__))
     from memory_optimizer import on_write, on_read
     from datetime import datetime, timedelta
 
